@@ -13,7 +13,8 @@ if __name__ == '__main__':
             user_input = input('--> ')
             circuit = tokenize(user_input)
             inputs = find_inputs(circuit)
-            print(expr)
+            test = Circuit(inputs, circuit)
+            test.test()
         except (SyntaxError) as err:
             print(type(err).__name__ + ':', err)
         except (KeyboardInterrupt, EOFError):

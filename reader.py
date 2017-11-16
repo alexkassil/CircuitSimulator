@@ -38,3 +38,15 @@ def next_token(src):
     else:
         raise SyntaxError("'{}' is not a token".format(c))
 
+def is_input(token):
+    for char in token:
+        if char not in SYMBOL:
+            return False
+    return True
+    
+def find_inputs(tokens):
+    inputs = []
+    for token in tokens:
+        if is_input(token):
+            inputs.append(token)
+    return inputs
