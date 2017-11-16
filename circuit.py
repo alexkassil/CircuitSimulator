@@ -12,3 +12,5 @@ class Circuit:
         for inpt in inputs:
             circuit = ['True' if inpt == x else x for x in circuit]
         print(' '.join(circuit), eval(circuit))
+
+

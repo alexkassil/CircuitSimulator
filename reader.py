@@ -37,4 +37,4 @@ def next_token(src):
         return src.remove_front()
     else:
         raise SyntaxError("'{}' is not a token".format(c))
-                    
+
