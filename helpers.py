@@ -6,6 +6,16 @@ def mass_update(tokens, pairs):
         tokens = update(tokens, old, new)
     return tokens
 
+def mass_circuit_update(tokens, pairs):
+    for old, new, num_inputs in pairs:
+        tokens = circuit_update(tokens, old, new, num_inputs)
+    return tokens
+
+def circuit_update(tokens, old, new, num_inputs):
+    for i in range(len(tokens)):
+        if tokens[i] == old:
+            print(i)
+
 def to_true_false(digit, n):
     """ Turn digit into n True/False values
     based on each bit in digit.
