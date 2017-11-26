@@ -6,7 +6,7 @@ class Circuit:
     circuit = None
     def __init__(self, inputs, circuit):
         self.inputs = remove_duplicates(inputs)
-        self.circuit = mass_circuit_update(circuit, [['+', 'not ({d[1]} and {d[0]})', 2]])
+        self.circuit = mass_circuit(circuit, [['+', 'not ({d[1]} and {d[0]})', 2]])
 #        self.circuit = mass_update(circuit, [['+', 'or'], ['*', 'and'], ['!', 'not']])
 
     def logic_gate(self):

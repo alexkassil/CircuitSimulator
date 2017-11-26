@@ -1,3 +1,4 @@
+
 def update(tokens, old, new):
     return [new if x == old else x for x in tokens]
 
@@ -5,16 +6,6 @@ def mass_update(tokens, pairs):
     for old, new in pairs:
         tokens = update(tokens, old, new)
     return tokens
-
-def mass_circuit_update(tokens, pairs):
-    for old, new, num_inputs in pairs:
-        tokens = circuit_update(tokens, old, new, num_inputs)
-    return tokens
-
-def circuit_update(tokens, old, new, num_inputs):
-    for i in range(len(tokens)):
-        if tokens[i] == old:
-            print(i)
 
 def to_true_false(digit, n):
     """ Turn digit into n True/False values

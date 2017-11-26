@@ -1,7 +1,7 @@
 import string
 
 from buffer import Buffer
-from circuit import *
+from helpers import *
 
 SYMBOL = set(string.ascii_lowercase + string.ascii_uppercase + string.digits + '_')
 BASIC_CIRCUIT = set('+*!')
@@ -50,3 +50,69 @@ def find_inputs(tokens):
         if is_input(token):
             inputs.append(token)
     return inputs
+
+def mass_circuit(tokens, pairs):
+    for old, new, num_inputs in pairs:
+        tokens = circuit_update(tokens, old, new, num_inputs)
+    return tokens
+
+def circuit_update(tokens, old, new, num_inputs):
+    while old in tokens:
+        for i in range(len(tokens)):
+            if tokens[i] == old:
+                d = replace(tokens, i, num_inputs)
+                change = new.format(d=d)
+                print(change)
+                for j in range(len(tokens)):
+                    if tokens[j] == old:
+                        tokens[j] = change
+                        break
+                break
+        print('!!!', tokenize(' '.join(tokens)))
+    print(tokens, d)
+
+
+    
+def replace(tokens, i, num_inputs):
+    result = []
+    while num_inputs:
+        result += [find_right(tokens, i)]
+        print(result)
+        num_inputs -= 1
+        if num_inputs:
+            result += [find_left(tokens, i)]
+            print(result)
+            i -= len(result)
+            num_inputs -= 1
+    return result
+
+def find_right(tokens, i):
+    current = tokens.pop(i+1)
+    if current != '(':
+        raise ValueError('Ill formated input (add parentheses!)')
+    value = -1;
+    while value:
+        current += tokens.pop(i+1)
+        if current[-1] == ')':
+            value += 1
+        if current[-1] == '(':
+            value -= 1
+    return current
+    
+def find_left(tokens, i):
+    current = tokens.pop(i-1)
+    i -= 1
+    if current != ')':
+        raise ValueError('Ill formated input (add parentheses!)')
+    value = 1;
+    while value:
+        current += tokens.pop(i-1)
+        i -= 1
+        if current[-1] == ')':
+            value += 1
+        if current[-1] == '(':
+            value -= 1
+    return current[::-1]
+
+
+
