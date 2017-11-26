@@ -8,29 +8,63 @@ def mass_update(tokens, pairs):
         tokens = update(tokens, old, new)
     return tokens
 
+def to_true_false(digit, n):
+    """ Turn digit into n True/False values
+    based on each bit in digit.
+    >>> to_true_false(3, 4)
+    [False, False, True, True]
+    """
+    result = []
+    while n:
+        current = pow(2, n-1)
+        if ((digit - current) >= 0):
+            result.append('True')
+            digit -= current
+        else:
+            result.append('False')
+        n -= 1
+    return result
+
+def display_first(inputs, circuit, longest):
+    for inpt in inputs:
+        print(inpt, end='')
+        print(' ' * (longest - len(inpt) + 1), end='')
+        print('| ', end='')
+    print('out')
+
+def display_rest(inputs, circuit, longest):
+    n = len(inputs)
+    for binary_digit in range(pow(2, n)):
+        values = to_true_false(binary_digit, n)
+        output = mass_update(circuit, zip(inputs, values))
+        display_row(values, eval(' '.join(output)), longest)
+
+def display_row(values, output, longest):
+    for value in values:
+        print(1 if eval(value) else 0, end='')
+        print(' ' * (longest-1), '| ', end='')
+    print(1 if output else 0)
+        
+def remove_duplicates(inputs):
+    result = [inputs[0]]
+    for inpt in inputs:
+        if inpt not in result:
+            result.append(inpt)
+    return result
+
 class Circuit:
     inputs = None
     circuit = None
     def __init__(self, inputs, circuit):
-        self.inputs = inputs
+        self.inputs = remove_duplicates(inputs)
         self.circuit = mass_update(circuit, [['+', 'or'], ['*', 'and'], ['!', 'not']])
 
     def logic_gate(self):
-        for inpt in self.inputs:
-            print(inpt, ' | ', end="")
-        print('out ', end='')
-        print()
-        num = len(self.inputs)
-        for i in range(num**2):
-            pairs = []
-            circuit = self.circuit
-            for j in range(num):
-                print(i%2, end=" ")
-                print(' | ', end="")
-                pairs.append([self.inputs[j], str(i%2 == 1)])
-                i = i // 2
-            circuit = mass_update(circuit, pairs)
-            print(1 if eval(' '.join(circuit)) else 0)
+        longest = max(len(self.inputs[0]), 3)
+        display_first(self.inputs, self.circuit, longest)
+        print(('-' * (longest + 3)) * (len(self.inputs)+1))
+        display_rest(self.inputs, self.circuit, longest)
+        
         
     def test(self):
         circuit = self.circuit
