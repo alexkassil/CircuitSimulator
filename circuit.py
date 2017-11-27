@@ -19,28 +19,13 @@ class Circuit:
         if len(args) != len(self.inputs):
             raise ValueError("Mismatched Number of Inputs")
         with_inputs = ' '.join(mass_update(self.circuit, zip(self.inputs, args)))
-        print(with_inputs)
         return eval(with_inputs)
-        
-    def test(self):
-        circuit = self.circuit
 
-        for inpt in self.inputs:
-            circuit = update(circuit, inpt, 'True')
+    def __call__(self, *args):
+        return self.eval([str(arg) for arg in args])
 
-        print(' '.join(circuit), eval(' '.join(circuit)))
-
-circuits = {
-    'c_and' : Circuit(['a', 'b'], 'a and b'),
-    'c_not' : Circuit(['a'], 'not a')
-    }
-
-def c_and(x, y):
-    return x and y
-
-#def c_not(x):
-#    return not x
-
+c_nand = Circuit(['a', 'b'], ['not', '(', 'a', 'and', 'b', ')'])
+    
 def update(tokens, old, new):
     return [new if x == old else x for x in tokens]
 

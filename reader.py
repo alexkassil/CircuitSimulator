@@ -8,7 +8,9 @@ BASIC_CIRCUIT = set('+*!')
 WHITESPACE = set(' \t\n\r')
 DELIMITERS = set('(,)')
 
-circuits = ['c_and', 'c_not']
+circuits = {
+    'c_nand' : 'NAND GATE : 2 Inputs\nReturns not (a and b)'
+    }
 
 def tokenize(s):
     src = Buffer(s)
