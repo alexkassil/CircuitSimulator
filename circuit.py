@@ -1,5 +1,4 @@
 from reader import *
-#from helpers import *
 import operator
 
 class Circuit:
