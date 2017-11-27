@@ -1,5 +1,4 @@
 from reader import *
-import operator
 
 class Circuit:
     def __init__(self, inputs, circuit):
@@ -19,8 +18,9 @@ class Circuit:
     def eval(self, args):
         if len(args) != len(self.inputs):
             raise ValueError("Mismatched Number of Inputs")
-        return eval(' '.join(mass_update(self.circuit, zip(self.inputs, args))))
-        
+        with_inputs = ' '.join(mass_update(self.circuit, zip(self.inputs, args)))
+        print(with_inputs)
+        return eval(with_inputs)
         
     def test(self):
         circuit = self.circuit
@@ -30,11 +30,16 @@ class Circuit:
 
         print(' '.join(circuit), eval(' '.join(circuit)))
 
+circuits = {
+    'c_and' : Circuit(['a', 'b'], 'a and b'),
+    'c_not' : Circuit(['a'], 'not a')
+    }
+
 def c_and(x, y):
     return x and y
 
-def c_not(x):
-    return not x
+#def c_not(x):
+#    return not x
 
 def update(tokens, old, new):
     return [new if x == old else x for x in tokens]
@@ -86,11 +91,3 @@ def remove_duplicates(inputs):
         if inpt not in result:
             result.append(inpt)
     return result
-
-
-
-
-
-
-
-
