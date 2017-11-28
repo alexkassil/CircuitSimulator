@@ -8,7 +8,6 @@ from reader import *
 from circuit import *
 
 
-
 # repl start
 if __name__ == '__main__':
     circuit = None
@@ -37,8 +36,11 @@ if __name__ == '__main__':
                     circuits[circuit_command] = circuit_description
                     circuit = tokenize(circuit_code)
                     inputs = find_inputs(circuit)
-                    exec(circuit_command + ' = Circuit(inputs, circuit)')
+                    
                     exec('global ' + circuit_command)
+                    exec(circuit_command + ' = Circuit(inputs, circuit)')
+                    test = Circuit(inputs, circuit)
+                    test.logic_gate(True, circuit_command)
                     print(circuit, inputs, c)
 
                 elif command in circuits:

@@ -9,17 +9,22 @@ class Circuit:
         self.inputs = remove_duplicates(inputs)
         self.circuit = mass_update(circuit, [['+', 'or'], ['*', 'and'], ['!', 'not']])
 
-    def logic_gate(self):
-        longest = max(len(self.inputs[0]), 3)
-        display_first(self.inputs, longest)
-        print(('-' * (longest + 3)) * (len(self.inputs)+1))
-        display_rest(self.inputs, self, longest)
+    def logic_gate(self, secret=False, name=None):
+        if not secret:
+            longest = max(len(self.inputs[0]), 3)
+            display_first(self.inputs, longest)
+            print(('-' * (longest + 3)) * (len(self.inputs)+1))
+            display_rest(self.inputs, self, longest)
+        else:
+            exec('nonlocal ' + name)
+            exec(name + ' = Circuit(self.inputs, self.circuit)')
+            print(locals())
+
 
     def eval(self, args):
         if len(args) != len(self.inputs):
             raise ValueError("Mismatched Number of Inputs")
         with_inputs = ' '.join(mass_update(self.circuit, zip(self.inputs, args)))
-        global c
         return eval(with_inputs)
 
     def __call__(self, *args):
