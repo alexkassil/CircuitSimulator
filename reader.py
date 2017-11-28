@@ -3,6 +3,7 @@ import string
 from buffer import Buffer
 from helpers import *
 
+
 SYMBOL = set(string.ascii_lowercase + string.ascii_uppercase + string.digits + '_')
 BASIC_CIRCUIT = set('+*!')
 WHITESPACE = set(' \t\n\r')
@@ -10,7 +11,15 @@ DELIMITERS = set('(,)')
 
 circuits = {
     'c_nand' : 'NAND GATE : 2 Inputs\nReturns not (a and b)'
-    }
+}
+
+master_circuits = {
+    'c_nand' : 'NAND GATE : 2 Inputs',
+    'c_not'  : 'NOT GATE : 1 Input',
+    'c_and'  : 'AND GATE : 2 Inputs',
+    'c_or'   : 'OR GATE : 2 Inputs',
+    'c_xor'  : 'XOR GATE : 2 Inputs'
+}
 
 def tokenize(s):
     src = Buffer(s)
@@ -51,7 +60,7 @@ def is_input(token):
 def find_inputs(tokens):
     inputs = []
     for token in tokens:
-        if is_input(token) and token not in circuits:
+        if is_input(token) and token not in circuits and token not in inputs:
             inputs.append(token)
     return inputs
 
