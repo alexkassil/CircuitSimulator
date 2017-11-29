@@ -8,12 +8,12 @@ from reader import *
 
 class Circuit:
     def __init__(self, inputs, circuit):
-        self.inputs = remove_duplicates(inputs)
+        self.inputs = inputs
         self.circuit = circuit
         
     def logic_gate(self, secret=False, name=None):
         if not secret:
-            longest = max(len(self.inputs[0]), 3)
+            longest = max(longest_input(self.inputs), 3)
             display_first(self.inputs, longest)
             print(('-' * (longest + 3)) * (len(self.inputs)+1))
             display_rest(self.inputs, self, longest)
@@ -27,7 +27,7 @@ class Circuit:
     def __call__(self, *args):
         return self.eval([str(arg) for arg in args])
     
-c_nand = Circuit(['a', 'b'], ['not', '(', 'a', 'and', 'b', ')'])
+c_nand = Circuit(['a', 'b'], tokenize('not(a and b)'))
 c_not = Circuit(['a'], tokenize('c_nand(a, a)'))
 c_and = Circuit(['a', 'b'], tokenize('c_not(c_nand(a, b))'))
 c_or = Circuit(['a', 'b'], tokenize('c_nand(c_nand(a, a), c_nand(b, b))'))
@@ -85,6 +85,8 @@ def remove_duplicates(inputs):
             result.append(inpt)
     return result
 
+def longest_input(lst):
+    return len(max(lst, key=len))
 
 # repl start
 if __name__ == '__main__':
@@ -115,6 +117,9 @@ if __name__ == '__main__':
                 elif command == 'add':
                     print('circuit command: ')
                     circuit_command = input()
+                    while (circuit_command == 'not' or circuit_command == 'and'):
+                        print('"not" and "and" are not allowed to be your circui_name!\nNew name:')
+                        circuit_command = input()
                     print('circuit description')
                     circuit_description = input()
                     print('circuit code')

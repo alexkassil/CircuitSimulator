@@ -61,9 +61,3 @@ def find_inputs(tokens):
             inputs.append(token)
     return inputs
 
-def remove_duplicates(inputs):
-    result = [inputs[0]]
-    for inpt in inputs:
-        if inpt not in result:
-            result.append(inpt)
-    return result
