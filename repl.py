@@ -30,6 +30,9 @@ class Circuit:
 c_nand = Circuit(['a', 'b'], ['not', '(', 'a', 'and', 'b', ')'])
 c_not = Circuit(['a'], tokenize('c_nand(a, a)'))
 c_and = Circuit(['a', 'b'], tokenize('c_not(c_nand(a, b))'))
+c_or = Circuit(['a', 'b'], tokenize('c_nand(c_nand(a, a), c_nand(b, b))'))
+c_xor = Circuit(['a', 'b'], tokenize('c_and(c_or(a, b), c_nand(a, b))'))
+c_nor = Circuit(['a', 'b'], tokenize('c_not(c_or(a, b))'))
     
 def update(tokens, old, new):
     return [new if x == old else x for x in tokens]
@@ -87,19 +90,28 @@ def remove_duplicates(inputs):
 if __name__ == '__main__':
     circuit = None
     global circuits
+    print("Type .help for assistance!")
     while True:
         try:
             user_input = input('--> ')
             if user_input[0] != '.':
-                circuit = tokenize(user_input)
-                inputs = find_inputs(circuit)
-                test = Circuit(inputs, circuit)
-                print(inputs, circuit, test)
-                test.logic_gate()
+                try:
+                    circuit = tokenize(user_input)
+                    inputs = find_inputs(circuit)
+                    test = Circuit(inputs, circuit)
+                    test.logic_gate()
+                except:
+                    print("Input", user_input, "is not well formated!!!")
             else:
                 command = user_input[1:]
                 if command == 'unlock':
                     circuits.update(master_circuits)
+                elif command == 'help':
+                    print('Avaliable commands:\n.circuits\n.add\n.unlock\n\nSimulate circuit with "circuit_name(var1, var2, ...)"\nExample: c_nand(a, b)')
+                elif command == 'circuits':
+                    print('Type ."circuit_name" for more info about each circuit!')
+                    for circuit in circuits:
+                        print(circuit)
                 elif command == 'add':
                     print('circuit command: ')
                     circuit_command = input()
@@ -122,5 +134,5 @@ if __name__ == '__main__':
             print(type(err).__name__ + ':', err)
         except (KeyboardInterrupt, EOFError):
             print()
-#            bye()
+            bye()
             break

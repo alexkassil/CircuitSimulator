@@ -1,7 +1,7 @@
 import string
 
 from buffer import Buffer
-from helpers import *
+
 
 
 SYMBOL = set(string.ascii_lowercase + string.ascii_uppercase + string.digits + '_')
@@ -10,15 +10,15 @@ WHITESPACE = set(' \t\n\r')
 DELIMITERS = set('(,)')
 
 circuits = {
-    'c_nand' : 'NAND GATE : 2 Inputs\nReturns not (a and b)'
+    'c_nand' : 'NAND GATE : 2 Inputs\nReturns not(a and b)'
 }
 
 master_circuits = {
-    'c_nand' : 'NAND GATE : 2 Inputs',
-    'c_not'  : 'NOT GATE : 1 Input',
-    'c_and'  : 'AND GATE : 2 Inputs',
-    'c_or'   : 'OR GATE : 2 Inputs',
-    'c_xor'  : 'XOR GATE : 2 Inputs'
+    'c_not'  : 'NOT GATE : 1 Input\nReturns c_nand(a, a)',
+    'c_and'  : 'AND GATE : 2 Inputs\nReturns c_not(c_nand(a, b))',
+    'c_or'   : 'OR GATE : 2 Inputs\nReturns c_nand(c_nand(a, a), c_nand(b, b))',
+    'c_xor'  : 'XOR GATE : 2 Inputs\nReturns c_and(c_or(a, b), c_nand(a, b))',
+    'c_nor'  : 'NOR GATE : 2 Inputs\nReturns c_not(c_or(a, b))'
 }
 
 def tokenize(s):
@@ -64,3 +64,9 @@ def find_inputs(tokens):
             inputs.append(token)
     return inputs
 
+def remove_duplicates(inputs):
+    result = [inputs[0]]
+    for inpt in inputs:
+        if inpt not in result:
+            result.append(inpt)
+    return result
