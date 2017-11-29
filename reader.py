@@ -5,7 +5,6 @@ from buffer import Buffer
 
 
 SYMBOL = set(string.ascii_lowercase + string.ascii_uppercase + string.digits + '_')
-BASIC_CIRCUIT = set('+*!')
 WHITESPACE = set(' \t\n\r')
 DELIMITERS = set('(,)')
 
@@ -46,8 +45,6 @@ def next_token(src):
     elif c in DELIMITERS:
         src.remove_front()
         return c
-    elif c in BASIC_CIRCUIT:
-        return src.remove_front()
     else:
         raise SyntaxError("'{}' is not a token".format(c))
 
