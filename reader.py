@@ -17,7 +17,8 @@ master_circuits = {
     'c_and'  : 'AND GATE : 2 Inputs\nReturns c_not(c_nand(a, b))',
     'c_or'   : 'OR GATE : 2 Inputs\nReturns c_nand(c_nand(a, a), c_nand(b, b))',
     'c_xor'  : 'XOR GATE : 2 Inputs\nReturns c_and(c_or(a, b), c_nand(a, b))',
-    'c_nor'  : 'NOR GATE : 2 Inputs\nReturns c_not(c_or(a, b))'
+    'c_nor'  : 'NOR GATE : 2 Inputs\nReturns c_not(c_or(a, b))',
+    'c_and_8': 'AND GATE : 8 Inputs\nReturns c_and(c_and(c_and(a, b), c_and(c, d)), c_and(c_and(e, f), c_and(g, h)))'
 }
 
 def tokenize(s):

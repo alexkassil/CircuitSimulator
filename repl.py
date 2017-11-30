@@ -33,7 +33,9 @@ c_and = Circuit(['a', 'b'], tokenize('c_not(c_nand(a, b))'))
 c_or = Circuit(['a', 'b'], tokenize('c_nand(c_nand(a, a), c_nand(b, b))'))
 c_xor = Circuit(['a', 'b'], tokenize('c_and(c_or(a, b), c_nand(a, b))'))
 c_nor = Circuit(['a', 'b'], tokenize('c_not(c_or(a, b))'))
-    
+c_and_8_code = 'c_and(c_and(c_and(a, b), c_and(c, d)), c_and(c_and(e, f), c_and(g, h)))'
+c_and_8 = Circuit(['a', 'b', 'c', 'd', 'e', 'f', 'g', 'h'], tokenize(c_and_8_code))
+
 def update(tokens, old, new):
     return [new if x == old else x for x in tokens]
 
@@ -102,7 +104,7 @@ if __name__ == '__main__':
                     inputs = find_inputs(circuit)
                     test = Circuit(inputs, circuit)
                     test.logic_gate()
-                except:
+                except RuntimeError:
                     print("Input", user_input, "is not well formated!!!")
             else:
                 command = user_input[1:]
